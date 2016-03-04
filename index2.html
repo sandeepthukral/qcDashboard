@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular.min.js"></script>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body ng-app="httpApp">
+
+  <div ng-controller="MyController" class="container">
+  
+  	<div>
+  		QC Components and Respurces Change Tracker
+  	</div>
+  	
+  	<div>
+  		Currently checked out components
+  	</div>
+  	
+  	<div>
+  		Currently Checked out resources
+  	</div>
+    <br/>
+    
+    
+    <h2>Components</h2>
+    
+    <table class="table">
+    	<tr>
+    		<th>Name</th>
+    		<th><a href="#" ng-click="orderComponentsByField='CO_VC_STATUS'; Components.reverseSort = !Components.reverseSort">
+          Status <span ng-show="orderComponentsByField == 'CO_VC_STATUS'"><span ng-show="!Components.reverseSort">^</span><span ng-show="Components.reverseSort">v</span></span>
+          		</a></th>
+    		<th>Checkin by</th>
+    		<th>
+    			<a href="#" ng-click="orderComponentsByField='CO_VC_CHECKIN_DATE'; Components.reverseSort = !Components.reverseSort">
+          Checkin Date <span ng-show="orderComponentsByField == 'CO_VC_CHECKIN_DATE'"><span ng-show="!Components.reverseSort">^</span><span ng-show="Components.reverseSort">v</span></span>
+          		</a>
+          </th>
+    		<th>CheckOut by</th>
+    		<th>Checkout Date</th>
+    	</tr>
+    	<tr ng-repeat="dataBits in Components|orderBy:orderComponentsByField:Components.reverseSort">
+    		<td>{{dataBits.CO_NAME}}</td>
+    		<td>{{dataBits.CO_VC_STATUS}}</td>
+    		<td>{{dataBits.CO_VC_CHECKIN_USER_NAME}}</td>
+    		<td>{{dataBits.CO_VC_CHECKIN_DATE}}</td>
+    		<td>{{dataBits.CO_VC_CHECKOUT_USER_NAME}}</td>
+    		<td>{{dataBits.CO_VC_CHECKOUT_DATE}}</td>
+    	</tr>
+    </table>
+    
+    
+    
+    <h2>Resources</h2>
+    <table class="table" ng-init="Resources.getResources()">
+    	<tr>
+    		<th>Name</th>
+    		<th>Type</th>
+    		<th><a href="#" ng-click="orderResourcesByField='RSC_VC_STATUS'; Resources.reverseSort = !Resources.reverseSort">
+          Status <span ng-show="orderResourcesByField == 'RSC_VC_STATUS'"><span ng-show="!Resources.reverseSort">^</span><span ng-show="Resources.reverseSort">v</span></span>
+          		</a></th>
+    		<th>CheckIn by</th>
+    		<th>
+    			<a href="#" ng-click="orderResourcesByField='RSC_VC_CHECKIN_DATE'; Resources.reverseSort = !Resources.reverseSort">
+          Checkin Date <span ng-show="orderResourcesByField == 'RSC_VC_CHECKIN_DATE'"><span ng-show="!Resources.reverseSort">^</span><span ng-show="Resources.reverseSort">v</span></span>
+          		</a>
+          </th>
+    		<th>CheckOut by</th>
+    		<th>Checkout Date</th>
+    	</tr>
+    	<tr ng-repeat="dataBits in Resources|orderBy:orderResourcesByField:Resources.reverseSort">
+    		<td>{{dataBits.RSC_NAME}}</td>
+    		<td>{{dataBits.RSC_TYPE}}</td>
+    		<td>{{dataBits.RSC_VC_STATUS}}</td>
+    		<td>{{dataBits.RSC_VC_CHECKIN_USER_NAME}}</td>
+    		<td>{{dataBits.RSC_VC_CHECKIN_DATE}}</td>
+    		<td>{{dataBits.RSC_VC_CHECKOUT_USER_NAME}}</td>
+    		<td>{{dataBits.RSC_VC_CHECKOUT_DATE}}</td>
+    	</tr>
+    </table>
+    
+    
+    
+    
+    <h2>Test Cases</h2>
+    <table class="table" ng-init="TestCases.getTestCases()">
+    	<tr>
+    		<th>Name</th>
+    		<th><a href="#" ng-click="orderTestCasesByField='TS_VC_STATUS'; TestCases.reverseSort = !TestCases.reverseSort">
+          Status <span ng-show="orderTestCasesByField == 'TS_VC_STATUS'"><span ng-show="!TestCases.reverseSort">^</span><span ng-show="TestCases.reverseSort">v</span></span>
+          		</a></th>
+    		<th>Checkin by</th>
+    		<th>
+    			<a href="#" ng-click="orderTestCasesByField='TS_VC_CHECKIN_DATE'; TestCases.reverseSort = !TestCases.reverseSort">
+          Checkin Date <span ng-show="orderTestCasesByField == 'TS_VC_CHECKIN_DATE'"><span ng-show="!TestCases.reverseSort">^</span><span ng-show="TestCases.reverseSort">v</span></span>
+          		</a>
+          </th>
+    		<th>CheckOut by</th>
+    		<th>Checkout Date</th>
+    	</tr>
+    	<tr ng-repeat="dataBits in TestCases|orderBy:orderTestCasesByField:TestCases.reverseSort">
+    		<td>{{dataBits.TS_NAME}}</td>
+    		<td>{{dataBits.TS_VC_STATUS}}</td>
+    		<td>{{dataBits.TS_VC_CHECKIN_USER_NAME}}</td>
+    		<td>{{dataBits.TS_VC_CHECKIN_DATE}}</td>
+    		<td>{{dataBits.TS_VC_USER_NAME}}</td>
+    		<td>{{dataBits.TS_VC_DATE}}</td>
+    	</tr>
+    </table>
+    
+  </div>
+
+  <script src="scripts/app.js"></script>
+  <script src="scripts/httpService.js"></script>
+
+{{ myData }}
+
+</body>
+
+
+
+</html>

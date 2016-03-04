@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular.min.js"></script>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body ng-app="myapp">
+
+	<style>
+		.animate-enter, 
+		.animate-leave
+		{ 
+		  -webkit-transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+		  -moz-transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+		  -ms-transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+		  -o-transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+		  transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+		  position: relative;
+		  display: block;
+		} 
+		 
+		.animate-enter.animate-enter-active, 
+		.animate-leave {
+		  opacity: 1;
+		  top: 0;
+		  height: 30px;
+		}
+		 
+		.animate-leave.animate-leave-active,
+		.animate-enter {
+		  opacity: 0;
+		  top: -50px;
+		  height: 0px;
+		}
+		
+		
+		input[type=text] {
+		  height:17px;
+		  border: 0;
+		  width: calc(100% - 2px);
+		  margin-left:1px;
+		  margin-bottom: 2px;
+		  box-shadow: -8px 10px 0px -7px #ebebeb, 8px 10px 0px -7px #ebebeb;
+		  -webkit-transition: box-shadow 0.3s;  
+		  -ms-transition: box-shadow 0.3s;
+		  transition: box-shadow 0.3s;
+		}
+		input[type=text]:focus {
+		  outline: none;
+		  box-shadow: -8px 10px 0px -7px #4EA6EA, 8px 10px 0px -7px #4EA6EA;
+		}
+	</style>
+
+  <div ng-controller="MyController" class="container">
+  
+    <br/>
+    
+    <form action="" class="form">
+    	<label for="noOfDays">How far in the past you wish to go?</label>
+    	<input name="noOfDays" type="number" ng-model="noOfDays" min="3" max="300" value="3" size="3"/>
+    	<br/>
+    	<input type="checkbox" name="autoUpdate" ng-model="autoUpdate"/>Auto Update
+    </form>
+    
+    <h2>Components</h2>
+    
+    <label for="searchComponents" ng-show="componentsFilled"> Filter 
+    	<input type="text" ng-model="searchComponents" class="search-query" style="width: 80px">
+    </label>
+    
+    <table class="table">
+    	<tr>
+    		<th>Name</th>
+    		<th><a href="#" 
+    			ng-click="orderComponentsByField='CO_VC_STATUS'; Components.reverseSort = !Components.reverseSort">
+          		Status <span ng-show="orderComponentsByField == 'CO_VC_STATUS'">
+          					<span ng-show="!Components.reverseSort">^</span>
+          					<span ng-show="Components.reverseSort">v</span>
+          			</span>
+          		</a>
+         	</th>
+    		<th>Checkin by</th>
+    		<th>
+    			<a href="#" ng-click="orderComponentsByField='CO_VC_CHECKIN_DATE'; Components.reverseSort = !Components.reverseSort">
+          Checkin Date <span ng-show="orderComponentsByField == 'CO_VC_CHECKIN_DATE'"><span ng-show="!Components.reverseSort">^</span><span ng-show="Components.reverseSort">v</span></span>
+          		</a>
+          </th>
+    		<th>CheckOut by</th>
+    		<th>Checkout Date</th>
+    	</tr>
+    	<tr ng-repeat="dataBits in Components|orderBy:orderComponentsByField:Components.reverseSort|filter:searchComponents"
+    			ng-animate="'animate'">
+    		<td>{{dataBits.CO_NAME}}</td>
+    		<td>{{dataBits.CO_VC_STATUS}}</td>
+    		<td>{{dataBits.CO_VC_CHECKIN_USER_NAME}}</td>
+    		<td>{{dataBits.CO_VC_CHECKIN_DATE}}</td>
+    		<td>{{dataBits.CO_VC_CHECKOUT_USER_NAME}}</td>
+    		<td>{{dataBits.CO_VC_CHECKOUT_DATE}}</td>
+    	</tr>
+    </table>
+    
+    
+    
+    <h2>Resources</h2>
+    <table class="table" ng-init="Resources.getResources()">
+    	<tr>
+    		<th>Name</th>
+    		<th>Type</th>
+    		<th>
+    			<a href="#" 
+    				ng-click="orderResourcesByField='RSC_VC_STATUS'; Resources.reverseSort = !Resources.reverseSort">
+          			Status <span ng-show="orderResourcesByField == 'RSC_VC_STATUS'">
+          					<span ng-show="!Resources.reverseSort">^</span>
+          					<span ng-show="Resources.reverseSort">v</span>
+          					</span>
+          		</a>
+          	</th>
+    		<th>CheckIn by</th>
+    		<th>
+    			<a href="#" 
+    				ng-click="orderResourcesByField='RSC_VC_CHECKIN_DATE'; Resources.reverseSort = !Resources.reverseSort">
+          			Checkin Date 
+       				<span ng-show="orderResourcesByField == 'RSC_VC_CHECKIN_DATE'">
+       					<span ng-show="!Resources.reverseSort">^</span>
+       					<span ng-show="Resources.reverseSort">v</span>
+       				</span>
+          		</a>
+          </th>
+    		<th>CheckOut by</th>
+    		<th>Checkout Date</th>
+    	</tr>
+    	<tr ng-repeat="dataBits in Resources|orderBy:orderResourcesByField:Resources.reverseSort">
+    		<td>{{dataBits.RSC_NAME}}</td>
+    		<td>{{dataBits.RSC_TYPE}}</td>
+    		<td>{{dataBits.RSC_VC_STATUS}}</td>
+    		<td>{{dataBits.RSC_VC_CHECKIN_USER_NAME}}</td>
+    		<td>{{dataBits.RSC_VC_CHECKIN_DATE}}</td>
+    		<td>{{dataBits.RSC_VC_CHECKOUT_USER_NAME}}</td>
+    		<td>{{dataBits.RSC_VC_CHECKOUT_DATE}}</td>
+    	</tr>
+    </table>
+    
+    
+    
+    
+    <h2>Test Cases</h2>
+    <table class="table" ng-init="TestCases.getTestCases()">
+    	<tr>
+    		<th>Name</th>
+    		<th><a href="#" ng-click="orderTestCasesByField='TS_VC_STATUS'; TestCases.reverseSort = !TestCases.reverseSort">
+          Status <span ng-show="orderTestCasesByField == 'TS_VC_STATUS'"><span ng-show="!TestCases.reverseSort">^</span><span ng-show="TestCases.reverseSort">v</span></span>
+          		</a></th>
+    		<th>Checkin by</th>
+    		<th>
+    			<a href="#" ng-click="orderTestCasesByField='TS_VC_CHECKIN_DATE'; TestCases.reverseSort = !TestCases.reverseSort">
+          Checkin Date <span ng-show="orderTestCasesByField == 'TS_VC_CHECKIN_DATE'"><span ng-show="!TestCases.reverseSort">^</span><span ng-show="TestCases.reverseSort">v</span></span>
+          		</a>
+          </th>
+    		<th>CheckOut by</th>
+    		<th>Checkout Date</th>
+    	</tr>
+    	<tr ng-repeat="dataBits in TestCases|orderBy:orderTestCasesByField:TestCases.reverseSort">
+    		<td>{{dataBits.TS_NAME}}</td>
+    		<td>{{dataBits.TS_VC_STATUS}}</td>
+    		<td>{{dataBits.TS_VC_CHECKIN_USER_NAME}}</td>
+    		<td>{{dataBits.TS_VC_CHECKIN_DATE}}</td>
+    		<td>{{dataBits.TS_VC_USER_NAME}}</td>
+    		<td>{{dataBits.TS_VC_DATE}}</td>
+    	</tr>
+    </table>
+    
+  </div>
+
+  <script src="scripts/controller.js"></script>
+
+</body>
+
+
+
+</html>
